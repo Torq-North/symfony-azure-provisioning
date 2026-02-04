@@ -129,9 +129,7 @@
       "value": []
     },
     "additionalSecrets": {
-      "value": {
-        "array": []
-      }
+      "value": []
     },
     "fileStorageAccountName": {
       "value": "symfonyazurefilestest"
