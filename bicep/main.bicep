@@ -11,7 +11,7 @@ param virtualNetworkResourceGroupName string = resourceGroup().name
 param virtualNetworkContainerAppsSubnetName string = 'container-apps'
 param virtualNetworkContainerAppsSubnetAddressSpace string = '10.0.0.0/23'
 param virtualNetworkPrivateEndpointsSubnetName string = 'private-endpoints'
-param virtualNetworkPrivateEndpointsSubnetAddressSpace string = '10.0.1.0/28'
+param virtualNetworkPrivateEndpointsSubnetAddressSpace string = '10.0.2.0/28'
 module virtualNetwork 'virtual-network/virtual-network.bicep' = if (fullProvision && virtualNetworkResourceGroupName == resourceGroup().name) {
   name: 'virtual-network'
   params: {
