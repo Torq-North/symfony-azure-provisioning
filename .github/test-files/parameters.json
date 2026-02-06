@@ -41,12 +41,8 @@
     "storageAccountName": {
       "value": "symfonyazuresatest"
     },
-    "storageAccountFileShares": {
-      "value": [
-        {
-          "name": "uploads"
-        }
-      ]
+    "storageAccountAdditionalFileShares": {
+      "value": []
     },
     "storageAccountLongTermBackups": {
       "value": false
