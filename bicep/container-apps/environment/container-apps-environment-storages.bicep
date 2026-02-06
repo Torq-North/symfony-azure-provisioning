@@ -18,6 +18,7 @@ var defaultVolumesAndMounts = [
     accountName: storageAccountName
     accountKey: storageAccountKey
     accessMode: 'ReadWrite'
+    storageType: 'AzureFile'
   }
   {
     mountName: 'uploads'
@@ -25,6 +26,7 @@ var defaultVolumesAndMounts = [
     accountName: storageAccountName
     accountKey: storageAccountKey
     accessMode: 'ReadWrite'
+    storageType: 'AzureFile'
   }
 ]
 var volumesAndMounts = concat(defaultVolumesAndMounts, additionalVolumesAndMounts)
