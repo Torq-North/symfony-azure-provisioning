@@ -18,7 +18,7 @@
       "value": "canadacentral"
     },
     "keyVaultName": {
-      "value": "symfony-azure-kv-test-2"
+      "value": "symfony-azure-kv-test"
     },
     "keyVaultEnablePurgeProtection": {
       "value": false
