@@ -6,16 +6,15 @@ param cronScaleRuleEndSchedule string
 param cronScaleRuleTimezone string
 param httpScaleRuleConcurrentRequestsThreshold int
 
-var httpScaleRule = [
-  {
-    name: 'default-http-scale-rule'
-    http: {
-      metadata: {
-        concurrentRequests: string(httpScaleRuleConcurrentRequestsThreshold)
-      }
+var httpScaleRule = provisionHttpScaleRule ? {
+  name: 'default-http-scale-rule'
+  http: {
+    metadata: {
+      concurrentRequests: string(httpScaleRuleConcurrentRequestsThreshold)
     }
   }
-]
+} : null
+
 
 module cronScaleRule './container-app-cron-scale-rule.bicep' = if (provisionCronScaleRule) {
   name: 'cron-scale-rule'
@@ -28,8 +27,8 @@ module cronScaleRule './container-app-cron-scale-rule.bicep' = if (provisionCron
 }
 
 var scaleRules = concat(
-  provisionHttpScaleRule ? httpScaleRule : [],
-  provisionCronScaleRule ? [cronScaleRule.outputs.cronScaleRule] : []
+  provisionHttpScaleRule ? [httpScaleRule] : [],
+  provisionCronScaleRule ? [cronScaleRule!.outputs.cronScaleRule] : []
 )
 
 output scaleRules array = scaleRules
