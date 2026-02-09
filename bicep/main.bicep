@@ -252,7 +252,7 @@ module logAnalyticsWorkspace 'log-analytics-workspace/log-analytics-workspace.bi
 
 // Container Apps
 param containerAppsEnvironmentName string
-param containerAppsEnvironmentUseWorkloadProfiles bool = false
+param containerAppsEnvironmentUseWorkloadProfiles bool = true
 param containerAppsManagedIdentityName string = '${resourceGroup().name}-container-app-managed-id'
 // Init Container App Job
 param initContainerAppJobName string = ''
