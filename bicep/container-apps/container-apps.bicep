@@ -235,11 +235,21 @@ module supervisordContainerApp 'container-app-supervisord.bicep' = if (provision
 }
 
 // Optional metric alerts
-module alerts './alerts/container-app-alerts.bicep' = [for containerAppName in [phpContainerAppName, supervisordContainerAppName]: if (provisionMetricAlerts) {
-  name: '${containerAppName}-alerts'
-  dependsOn: [phpContainerApp, supervisordContainerApp]
+module phpContainerAppAlerts './alerts/container-app-alerts.bicep' = {
+  name: '${phpContainerAppName}-alerts'
+  dependsOn: [phpContainerApp]
   params: {
-    containerAppName: containerAppName
+    containerAppName: phpContainerAppName
     generalMetricAlertsActionGroupName: generalMetricAlertsActionGroupName
+    criticalMetricAlertsActionGroupName: criticalMetricAlertsActionGroupName
   }
-}] 
+}
+module supervisordContainerAppAlerts './alerts/container-app-alerts.bicep' = if (provisionSupervisordContainerApp) {
+  name: '${supervisordContainerAppName}-alerts'
+  dependsOn: [supervisordContainerApp]
+  params: {
+    containerAppName: supervisordContainerAppName
+    generalMetricAlertsActionGroupName: generalMetricAlertsActionGroupName
+    criticalMetricAlertsActionGroupName: criticalMetricAlertsActionGroupName
+  }
+}

@@ -1,5 +1,6 @@
 param containerAppName string
 param generalMetricAlertsActionGroupName string
+param criticalMetricAlertsActionGroupName string
 
 param threshold int = 3 // Restart threshold
 param alertTimeWindow string = 'PT5M' // 5 minutes
