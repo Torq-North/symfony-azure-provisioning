@@ -186,6 +186,7 @@ module initContainerAppJob 'container-app-job-init.bicep' = {
     databaseUser: databaseUser
     managedIdentityId: managedIdentity.id
     keyVaultName: keyVaultName
+    appSecret: appSecret
     additionalSecrets: additionalSecretsModule.outputs.secrets
     additionalVolumesAndMounts: additionalVolumesAndMounts
   }

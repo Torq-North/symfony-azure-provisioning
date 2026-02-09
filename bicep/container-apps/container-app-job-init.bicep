@@ -23,8 +23,10 @@ param keyVaultName string
 
 @secure()
 param storageAccountKeySecret object
-
+@secure()
 param databasePasswordSecret object
+@secure()
+param appSecret object
 
 param managedIdentityId string
 
@@ -33,7 +35,7 @@ resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2022-11-01-
 }
 
 // Secrets
-var defaultSecrets = [databasePasswordSecret, storageAccountKeySecret]
+var defaultSecrets = [databasePasswordSecret, storageAccountKeySecret, appSecret]
 var secrets = concat(defaultSecrets, additionalSecrets)
 
 module volumesModule './container-apps-volumes.bicep' = {
