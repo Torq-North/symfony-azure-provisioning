@@ -1,7 +1,7 @@
 // Creates a service principal for "syncing" data between to Azure environments, namely
 // the MySQL databases and Storage Accounts. Accepts a source and target parameter file
 // and assigns the necessary roles to the service principal. Mainly for use with 
-// https://github.com/TorqIT/symfony-github-actions-workflows/blob/main/.github/workflows/job-azure-sync.yml.
+// https://github.com/Torq-North/symfony-github-actions-workflows/blob/main/.github/workflows/job-azure-sync.yml.
 
 SOURCE_FILE=$1
 TARGET_FILE=$2

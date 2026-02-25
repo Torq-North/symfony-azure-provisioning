@@ -12,30 +12,30 @@ Follow these steps to provision an environment for the first time:
    ```yaml
    services:
      pimcore-azure-provisioning:
-        # The image uses semantic versioning
-        image: ghcr.io/torqit/pimcore-azure-provisioning:1
-        volumes:
-           # Necessary for running Docker commands within the container
-           - /var/run/docker.sock:/var/run/docker.sock
-           # Volume mount in your parameter file as needed - copy this from stub.parameters.json and
-           # fill in your preferred values
-           - ./azure/parameters.json:/azure/parameters.json:rw
-           # You may also want to declare per-environment files like so
-           - ./azure/parameters.dev.json:/azure/parameters.dev.json:rw
-           - ./azure/parameters.prod.json:/azure/parameters.prod.json:rw
-           # Define a volume to hold your login information between container restarts
-           - azure:/root/.azure
+       # The image uses semantic versioning
+       image: ghcr.io/torq-north/pimcore-azure-provisioning:1
+       volumes:
+         # Necessary for running Docker commands within the container
+         - /var/run/docker.sock:/var/run/docker.sock
+         # Volume mount in your parameter file as needed - copy this from stub.parameters.json and
+         # fill in your preferred values
+         - ./azure/parameters.json:/azure/parameters.json:rw
+         # You may also want to declare per-environment files like so
+         - ./azure/parameters.dev.json:/azure/parameters.dev.json:rw
+         - ./azure/parameters.prod.json:/azure/parameters.prod.json:rw
+         # Define a volume to hold your login information between container restarts
+         - azure:/root/.azure
    volumes:
-      azure:
+     azure:
    ```
 2. Update `parameters.json` with the appropriate values for your Azure environment. Note that the comments present in `stub.parameters.json` will need to be removed. Note that you will also need to remove the parameters related to custom domains and certificates (see section below) for the initial provisioning.
 3. Enter the container shell with `docker exec -it <container-name> bash`.
 4. Run `./login-to-tenant.sh parameters.json` and follow the browser prompts to log in. If you wish to use a Service Principal instead of your Microsoft account to perform the provisioning, instead run `az login --service-principal -u <service principal id> -p <service principal password> --tenant <your tenant>`.
 5. If a Resource Group has not yet been created (e.g. if you are not an Owner in the Azure tenant), ensure it is created before running any scripts. Ensure also that you have Owner permissions on the created Resource Group.
 6. Run `./create-key-vault.sh parameters.json` to create a Key Vault in your Resource Group. Once created, navigate to the created Key Vault in the Azure Portal and use the "Access control (IAM)" blade to add yourself to the "Key Vault Secrets Officer" role (the Owner role at the Resource Group will allow you to do this; but it is not itself sufficient to actually manage secrets). Additionally, make sure the Key Vault is using a "Role-based Access Policy" in the "Access configuration" blade. Make up a secure database password and add it as a secret to this vault using either the Azure Portal or CLI (make sure the `databasePasswordSecretName` value matches the secret name in the vault). Add any other secrets your Container App will need to this vault as well (see `stub.parameters.jsonc` for details on how to reference these).
-   1. NOTE: There is an open issue to improve the Key Vault scripting (see [#50](https://github.com/TorqIT/pimcore-azure-provisioning/issues/50))
-8. Run `./provision.sh parameters.json` to provision the Azure environment.
-9. Use whatever method you prefer to push your Docker images to the Container Registry. Refer to the steps in the section below for pushing via CI/CD (GitHub Actions).
+   1. NOTE: There is an open issue to improve the Key Vault scripting (see [#50](https://github.com/Torq-North/pimcore-azure-provisioning/issues/50))
+7. Run `./provision.sh parameters.json` to provision the Azure environment.
+8. Use whatever method you prefer to push your Docker images to the Container Registry. Refer to the steps in the section below for pushing via CI/CD (GitHub Actions).
 9. (ONLY REQUIRED IF YOU ARE NOT DEPLOYING AN INIT CONTAINER) Once provisioned and deployed, follow these steps to seed the database with the Pimcore schema:
    1. Make up a secure password that you will use to log into the Pimcore admin panel and save it somewhere secure such as a password manager, or within the key vault you created earlier. Note that symbols such as % and # will not work with the bash command below, so a long alphanumeric password should be used.
    2. Ensure that your PHP image contains the SSL certificate required for communicating with the database (can be downloaded from https://dl.cacerts.digicert.com/DigiCertGlobalRootCA.crt.pem). The command below assumes the file is present at `/var/www/html/config/db/DigiCertGlobalRootCA.crt.pem`. Additionally, your Symfony database connection string (usually present in `config/database.yaml`) must be configured to use the certificate (e.g. `options: !php/const:PDO::MYSQL_ATTR_SSL_CA: '/var/www/html/config/db/DigiCertGlobalRootCA.crt.pem'`). If this is not properly set, the command below will fail with "Connections using insecure transport are prohibited".
@@ -96,7 +96,7 @@ Note that all backups are stored using Local Redundancy (see https://learn.micro
 
 ## Configuring CI/CD
 
-See https://github.com/TorqIT/pimcore-github-actions-workflows for examples of GitHub Actions workflows that can be used to deploy to Container Apps.
+See https://github.com/Torq-North/pimcore-github-actions-workflows for examples of GitHub Actions workflows that can be used to deploy to Container Apps.
 
 ## Updating an existing environment
 
@@ -108,4 +108,4 @@ The `provision.sh` script provides the `main.bicep` file with the parameter `ful
 
 ## Useful scripts
 
-Once an environment has been provisioned, the `helper-scripts/` directory contains some useful scripts that can be run against the running environment (see its [README](https://github.com/TorqIT/pimcore-azure-provisioning/blob/main/scripts/README.md)).
+Once an environment has been provisioned, the `helper-scripts/` directory contains some useful scripts that can be run against the running environment (see its [README](https://github.com/Torq-North/pimcore-azure-provisioning/blob/main/scripts/README.md)).

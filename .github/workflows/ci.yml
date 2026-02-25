@@ -49,7 +49,7 @@ jobs:
       # - name: Pull latest skeleton
       #   uses: actions/checkout@v4
       #   with:
-      #     repository: TorqIT/symfony-skeleton
+      #     repository: Torq-North/symfony-skeleton
       #     ref: main
       #     path: skeleton
 
